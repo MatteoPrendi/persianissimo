@@ -1,5 +1,6 @@
 ---
 import { SEO } from "astro-seo";
+import { Font } from "astro:assets";
 import "@/styles/global.css";
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 const { generator, props } = Astro;
 ---
 
-<html lang="en">
+<html lang="it">
     <head>
         <SEO
             charset="utf-8"
@@ -28,6 +29,9 @@ const { generator, props } = Astro;
                 ],
             }}
         />
+
+        <Font cssVariable="--font-sans" />
+        <Font cssVariable="--font-serif" />
     </head>
 
     <body>
