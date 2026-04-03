@@ -1,0 +1,36 @@
+---
+import { SEO } from "astro-seo";
+import "@/styles/global.css";
+
+interface Props {
+    title: string;
+    description?: string;
+}
+
+const { generator, props } = Astro;
+---
+
+<html lang="en">
+    <head>
+        <SEO
+            charset="utf-8"
+            title={props.title}
+            titleTemplate="%s — Persianissimo"
+            description={props.description}
+            extend={{
+                meta: [
+                    { name: "viewport", content: "width=device-width" },
+                    { name: "generator", content: generator },
+                ],
+                link: [
+                    { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+                    { rel: "icon", href: "/favicon.ico", type: "image/x-image" },
+                ],
+            }}
+        />
+    </head>
+
+    <body>
+        <slot />
+    </body>
+</html>
