@@ -24,6 +24,7 @@ export default buildConfig({
     autoRefresh: true,
   },
   collections: [Users, Media],
+  globals: [Home],
 
   secret: process.env.PAYLOAD_SECRET,
   db: postgresAdapter({
