@@ -50,7 +50,12 @@ export default buildConfig({
       token: process.env.BLOB_TOKEN,
       enabled: true,
       collections: {
-        media: true,
+        media: {
+          disableLocalStorage: true,
+          generateFileURL: ({ filename }) => {
+            return `${process.env.BLOB_URL}/${filename}`;
+          },
+        },
       },
     }),
   ],
