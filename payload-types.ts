@@ -334,8 +334,13 @@ export interface Home {
   hero: {
     title: string;
     subtitle: string;
+    button: {
+      label: string;
+      href: string;
+    };
     imageLeft: number | Media;
     imageRight: number | Media;
+    videoUrl: string;
   };
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -350,8 +355,15 @@ export interface HomeSelect<T extends boolean = true> {
     | {
         title?: T;
         subtitle?: T;
+        button?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
         imageLeft?: T;
         imageRight?: T;
+        videoUrl?: T;
       };
   updatedAt?: T;
   createdAt?: T;
