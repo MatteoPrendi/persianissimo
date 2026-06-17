@@ -21,7 +21,28 @@ export const Hero: Tab = {
     {
       label: "Pulsante",
       name: "button",
-      type: "text",
+      type: "group",
+      fields: [
+        {
+          type: "row",
+          fields: [
+            {
+              type: "text",
+              name: "label",
+              label: "Contenuto",
+              required: true,
+              localized: true,
+            },
+            {
+              type: "text",
+              name: "href",
+              label: "Link",
+              required: true,
+              localized: true,
+            },
+          ],
+        },
+      ],
       required: true,
       localized: true,
     },
