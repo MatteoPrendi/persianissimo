@@ -5,9 +5,7 @@ import { ScrollContext } from "@/components/ScrollContainer";
 export function useSectionScroll() {
   const context = useContext(ScrollContext);
   if (!context) {
-    throw new Error(
-      "useSectionScroll must be used within a <ScrollContext /> component"
-    );
+    throw new Error("useSectionScroll used outside of context");
   }
 
   return context;
