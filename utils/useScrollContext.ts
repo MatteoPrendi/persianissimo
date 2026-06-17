@@ -2,11 +2,11 @@
 import { useContext } from "react";
 import { ScrollContext } from "@/components/ScrollContainer";
 
-export function useSectionScroll() {
+export function useScrollContext() {
   const context = useContext(ScrollContext);
   if (!context) {
     throw new Error("useSectionScroll used outside of context");
   }
 
-  return context;
+  return context.yProgress;
 }
