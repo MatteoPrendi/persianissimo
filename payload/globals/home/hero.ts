@@ -60,5 +60,11 @@ export const Hero: Tab = {
       relationTo: "media",
       required: true,
     },
+    {
+      label: "Link video",
+      name: "videoUrl",
+      type: "text",
+      required: true,
+    },
   ],
 };
