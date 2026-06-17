@@ -5,7 +5,10 @@ import { useScrollContext } from "@/utils/useScrollContext";
 interface Props {
   title: string;
   subtitle: string;
-  button: string;
+  button: {
+    label: string;
+    href: string;
+  };
 }
 
 export default function CallToAction({ title, subtitle, button }: Props) {
@@ -26,6 +29,7 @@ export default function CallToAction({ title, subtitle, button }: Props) {
       >
         {title}
       </motion.h1>
+
       <motion.p
         style={{ color: paragraphColor }}
         className="mb-10 max-w-2xl text-lg text-balance md:text-xl"
@@ -34,10 +38,10 @@ export default function CallToAction({ title, subtitle, button }: Props) {
       </motion.p>
 
       <a
-        href="#"
+        href={button.href}
         className="bg-accent pointer-events-auto rounded px-4.5 py-2.5 text-lg font-medium text-white transition-colors hover:cursor-pointer"
       >
-        {button}
+        {button.label}
       </a>
     </motion.div>
   );
