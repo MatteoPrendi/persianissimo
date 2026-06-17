@@ -19,6 +19,13 @@ export const Hero: Tab = {
       localized: true,
     },
     {
+      label: "Pulsante",
+      name: "button",
+      type: "text",
+      required: true,
+      localized: true,
+    },
+    {
       label: "Immagine sinistra",
       name: "imageLeft",
       type: "upload",
