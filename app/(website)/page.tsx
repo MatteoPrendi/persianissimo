@@ -1,7 +1,14 @@
-export default function Home() {
+import Hero from "@/components/hero";
+import Introduction from "@/components/introduction";
+import Marquee from "@/components/marquee";
+
+export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      <h1 className="text-4xl font-semibold">Hello world!</h1>
+    <main className="min-h-[200vh]">
+      <Hero />
+
+      <Introduction />
+      <Marquee />
     </main>
   );
 }

@@ -353,6 +353,12 @@ export interface Home {
       bottomRight: number | Media;
     };
   };
+  marquee: {
+    phrases: {
+      content: string;
+      id?: string | null;
+    }[];
+  };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -390,6 +396,16 @@ export interface HomeSelect<T extends boolean = true> {
               topRight?: T;
               bottomLeft?: T;
               bottomRight?: T;
+            };
+      };
+  marquee?:
+    | T
+    | {
+        phrases?:
+          | T
+          | {
+              content?: T;
+              id?: T;
             };
       };
   _status?: T;
