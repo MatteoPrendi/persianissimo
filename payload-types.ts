@@ -342,6 +342,18 @@ export interface Home {
     imageRight: number | Media;
     videoUrl: string;
   };
+  introduction: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    images: {
+      topLeft: number | Media;
+      topRight: number | Media;
+      bottomLeft: number | Media;
+      bottomRight: number | Media;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -365,6 +377,22 @@ export interface HomeSelect<T extends boolean = true> {
         imageRight?: T;
         videoUrl?: T;
       };
+  introduction?:
+    | T
+    | {
+        badge?: T;
+        title?: T;
+        subtitle?: T;
+        images?:
+          | T
+          | {
+              topLeft?: T;
+              topRight?: T;
+              bottomLeft?: T;
+              bottomRight?: T;
+            };
+      };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

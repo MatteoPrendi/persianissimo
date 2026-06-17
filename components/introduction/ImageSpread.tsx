@@ -51,7 +51,7 @@ export default function ImageSpread({
         <motion.div
           key={image.id}
           style={style}
-          className="absolute top-1/2 left-1/2 aspect-square w-[45vw] sm:w-[30vw] md:aspect-auto md:h-[34vh] md:w-[22vw]"
+          className="absolute top-1/2 left-1/2 z-20 aspect-square w-[45vw] sm:w-[30vw] md:aspect-auto md:h-[34vh] md:w-[22vw]"
         >
           <div className="h-full w-full overflow-hidden rounded-3xl shadow-2xl">
             <img
