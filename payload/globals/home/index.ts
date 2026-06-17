@@ -12,4 +12,11 @@ export const Home: GlobalConfig = {
       tabs: [Hero, Introdution],
     },
   ],
+
+  versions: {
+    max: 5,
+    drafts: {
+      autosave: true,
+    },
+  },
 };

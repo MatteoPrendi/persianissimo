@@ -5,6 +5,27 @@ export const Introdution: Tab = {
   label: "Introduzione",
   fields: [
     {
+      name: "badge",
+      label: "Etichetta",
+      type: "text",
+      required: true,
+      localized: true,
+    },
+    {
+      name: "title",
+      label: "Titolo",
+      type: "text",
+      required: true,
+      localized: true,
+    },
+    {
+      name: "subtitle",
+      label: "Sottotitolo",
+      type: "textarea",
+      required: true,
+      localized: true,
+    },
+    {
       name: "images",
       label: "Immagini",
       type: "group",
