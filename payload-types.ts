@@ -332,15 +332,19 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Home {
   id: number;
   hero: {
-    title: string;
-    subtitle: string;
-    button: {
-      label: string;
-      href: string;
+    content: {
+      title: string;
+      subtitle: string;
+      button: {
+        label: string;
+        href: string;
+      };
     };
-    imageLeft: number | Media;
-    imageRight: number | Media;
-    videoUrl: string;
+    media: {
+      leftImage: number | Media;
+      rightImage: number | Media;
+      videoUrl: string;
+    };
   };
   introduction: {
     badge: string;
@@ -371,17 +375,25 @@ export interface HomeSelect<T extends boolean = true> {
   hero?:
     | T
     | {
-        title?: T;
-        subtitle?: T;
-        button?:
+        content?:
           | T
           | {
-              label?: T;
-              href?: T;
+              title?: T;
+              subtitle?: T;
+              button?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
             };
-        imageLeft?: T;
-        imageRight?: T;
-        videoUrl?: T;
+        media?:
+          | T
+          | {
+              leftImage?: T;
+              rightImage?: T;
+              videoUrl?: T;
+            };
       };
   introduction?:
     | T

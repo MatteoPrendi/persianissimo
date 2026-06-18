@@ -1,63 +1,32 @@
 import type { Tab } from "payload";
+import {
+  requiredLocalizedField,
+  mediaUploadField,
+} from "@/utils/fieldFactories";
 
-export const Introdution: Tab = {
+export const Introduction: Tab = {
   name: "introduction",
   label: "Introduzione",
   fields: [
     {
-      name: "badge",
-      label: "Etichetta",
-      type: "text",
-      required: true,
-      localized: true,
-    },
-    {
-      name: "title",
-      label: "Titolo",
-      type: "text",
-      required: true,
-      localized: true,
-    },
-    {
-      name: "subtitle",
-      label: "Sottotitolo",
-      type: "textarea",
-      required: true,
-      localized: true,
-    },
-    {
-      name: "images",
-      label: "Immagini",
+      name: "content",
+      label: "Contenuto",
       type: "group",
       fields: [
-        {
-          label: "Immagine in alto a sinistra",
-          name: "topLeft",
-          type: "upload",
-          relationTo: "media",
-          required: true,
-        },
-        {
-          label: "Immagine in alto a destra",
-          name: "topRight",
-          type: "upload",
-          relationTo: "media",
-          required: true,
-        },
-        {
-          label: "Immagine in basso a sinistra",
-          name: "bottomLeft",
-          type: "upload",
-          relationTo: "media",
-          required: true,
-        },
-        {
-          label: "Immagine in basso a destra",
-          name: "bottomRight",
-          type: "upload",
-          relationTo: "media",
-          required: true,
-        },
+        requiredLocalizedField("badge", "Etichetta", "text"),
+        requiredLocalizedField("title", "Titolo", "text"),
+        requiredLocalizedField("subtitle", "Sottotitolo", "textarea"),
+      ],
+    },
+    {
+      name: "Media",
+      label: "Media",
+      type: "group",
+      fields: [
+        mediaUploadField("topLeftImage", "Immagine in alto a sinistra"),
+        mediaUploadField("topRightImage", "Immagine in alto a destra"),
+        mediaUploadField("bottomLeftImage", "Immagine in basso a sinistra"),
+        mediaUploadField("bottomRightImage", "Immagine in basso a destra"),
       ],
     },
   ],
