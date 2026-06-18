@@ -1,4 +1,4 @@
-import { usePayloadGlobal } from "@/utils/usePayload";
+import { getPayloadGlobal } from "@/utils/payload";
 
 import ScrollContainer from "@/contexts/ScrollContext";
 import CallToAction from "@/components/hero/CallToAction";
@@ -8,7 +8,7 @@ import ExpandingVideo from "@/components/hero/ExpandingVideo";
 import { validateImages } from "@/utils/validateImage";
 
 export default async function Hero() {
-  const { hero } = await usePayloadGlobal("home");
+  const { hero } = await getPayloadGlobal("home");
   const { content, media } = hero;
 
   const { videoUrl, ...images } = media;
