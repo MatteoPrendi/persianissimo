@@ -19,7 +19,7 @@ export const Introduction: Tab = {
       ],
     },
     {
-      name: "Media",
+      name: "media",
       label: "Media",
       type: "group",
       fields: [

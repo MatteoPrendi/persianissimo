@@ -1,16 +1,16 @@
 "use client";
 import { clsx } from "clsx";
 import { motion, useTransform } from "motion/react";
+import type { Media } from "@/payload-types";
 
 import { useScrollContext } from "@/utils/useScrollContext";
 
-interface Props {
-  src: string;
-  alt: string;
+interface Props extends Media {
+  url: string;
   position: "left" | "right";
 }
 
-export default function FloatingImage({ src, alt, position }: Props) {
+export default function FloatingImage({ url, alt, position }: Props) {
   const yPos = useTransform(useScrollContext(), [0, 1], ["0%", "160%"]);
 
   return (
@@ -24,7 +24,7 @@ export default function FloatingImage({ src, alt, position }: Props) {
       )}
     >
       <img
-        src={src}
+        src={url}
         alt={alt}
         className={clsx(
           "h-auto w-full rounded-sm border-8 border-white shadow-2xl",

@@ -347,14 +347,16 @@ export interface Home {
     };
   };
   introduction: {
-    badge: string;
-    title: string;
-    subtitle: string;
-    images: {
-      topLeft: number | Media;
-      topRight: number | Media;
-      bottomLeft: number | Media;
-      bottomRight: number | Media;
+    content: {
+      badge: string;
+      title: string;
+      subtitle: string;
+    };
+    media: {
+      topLeftImage: number | Media;
+      topRightImage: number | Media;
+      bottomLeftImage: number | Media;
+      bottomRightImage: number | Media;
     };
   };
   marquee: {
@@ -398,16 +400,20 @@ export interface HomeSelect<T extends boolean = true> {
   introduction?:
     | T
     | {
-        badge?: T;
-        title?: T;
-        subtitle?: T;
-        images?:
+        content?:
           | T
           | {
-              topLeft?: T;
-              topRight?: T;
-              bottomLeft?: T;
-              bottomRight?: T;
+              badge?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        media?:
+          | T
+          | {
+              topLeftImage?: T;
+              topRightImage?: T;
+              bottomLeftImage?: T;
+              bottomRightImage?: T;
             };
       };
   marquee?:

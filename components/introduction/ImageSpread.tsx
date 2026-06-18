@@ -1,12 +1,9 @@
 "use client";
 import { motion, useTransform, useMotionTemplate } from "motion/react";
 import { useScrollContext } from "@/utils/useScrollContext";
+import type { Media } from "@/payload-types";
 
-interface Image {
-  id: number;
-  url: string;
-  alt: string;
-}
+type Image = Media & { url: string };
 
 interface Props {
   topLeftImage: Image;

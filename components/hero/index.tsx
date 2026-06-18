@@ -5,30 +5,24 @@ import CallToAction from "@/components/hero/CallToAction";
 import FloatingImage from "@/components/hero/FloatingImage";
 import ExpandingVideo from "@/components/hero/ExpandingVideo";
 
+import { validateImages } from "@/utils/validateImage";
+
 export default async function Hero() {
   const { hero } = await usePayloadGlobal("home");
-  const { title, subtitle, button, imageLeft, imageRight, videoUrl } = hero;
+  const { content, media } = hero;
 
-  if (typeof imageLeft !== "object" || typeof imageRight !== "object") {
-    throw new Error("HERO: One of the images was not properly populated");
-  }
+  const { videoUrl, ...images } = media;
 
-  if (typeof imageLeft.url !== "string" || typeof imageRight.url !== "string") {
-    throw new Error("HERO: One of the images has an invalid or missing URL");
-  }
+  validateImages(images);
 
   return (
     <ScrollContainer height="200vh">
-      <CallToAction title={title} subtitle={subtitle} button={button} />
+      <CallToAction {...content} />
 
-      <FloatingImage src={imageLeft.url} alt={imageLeft.alt} position="left" />
-      <FloatingImage
-        src={imageRight.url}
-        alt={imageRight.alt}
-        position="right"
-      />
+      <FloatingImage {...images.leftImage} position="left" />
+      <FloatingImage {...images.rightImage} position="right" />
 
-      <ExpandingVideo videoUrl={videoUrl} />
+      <ExpandingVideo videoUrl={media.videoUrl} />
     </ScrollContainer>
   );
 }
