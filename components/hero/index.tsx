@@ -1,4 +1,4 @@
-import { usePayload } from "@/utils/usePayload";
+import { usePayloadGlobal } from "@/utils/usePayload";
 
 import ScrollContainer from "@/components/ScrollContainer";
 import CallToAction from "@/components/hero/CallToAction";
@@ -6,10 +6,8 @@ import FloatingImage from "@/components/hero/FloatingImage";
 import ExpandingVideo from "@/components/hero/ExpandingVideo";
 
 export default async function Hero() {
-  const payload = await usePayload();
-  const homeData = await payload.findGlobal({ slug: "home" });
-  const { title, subtitle, button, imageLeft, imageRight, videoUrl } =
-    homeData.hero;
+  const { hero } = await usePayloadGlobal("home");
+  const { title, subtitle, button, imageLeft, imageRight, videoUrl } = hero;
 
   if (typeof imageLeft !== "object" || typeof imageRight !== "object") {
     throw new Error("HERO: One of the images was not properly populated");

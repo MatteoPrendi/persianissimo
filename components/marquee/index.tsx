@@ -1,9 +1,8 @@
-import { usePayload } from "@/utils/usePayload";
+import { usePayloadGlobal } from "@/utils/usePayload";
 import ScrollingText from "@/components/marquee/ScrollingText";
 
 export default async function Marquee() {
-  const payload = await usePayload();
-  const { marquee } = await payload.findGlobal({ slug: "home" });
+  const { marquee } = await usePayloadGlobal("home");
 
   const contentPhrases = marquee.phrases.map(({ content }) => content);
   const duplicatedPhrases = [...contentPhrases, ...contentPhrases];

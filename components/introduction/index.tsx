@@ -1,4 +1,4 @@
-import { usePayload } from "@/utils/usePayload";
+import { usePayloadGlobal } from "@/utils/usePayload";
 
 import ScrollContainer from "@/components/ScrollContainer";
 import ImageSpread from "@/components/introduction/ImageSpread";
@@ -7,9 +7,8 @@ import ContentReveal from "@/components/introduction/ContentReveal";
 import { Media } from "@/payload-types";
 
 export default async function Introduction() {
-  const payload = await usePayload();
-  const homeData = await payload.findGlobal({ slug: "home" });
-  const { badge, title, subtitle, images } = homeData.introduction;
+  const { introduction } = await usePayloadGlobal("home");
+  const { badge, title, subtitle, images } = introduction;
 
   return (
     <ScrollContainer height="200vh">
