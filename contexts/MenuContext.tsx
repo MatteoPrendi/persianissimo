@@ -11,7 +11,7 @@ interface Props {
   children: ReactNode;
 }
 
-export default function ScrollContainer({ children }: Props) {
+export default function MenuContainer({ children }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
