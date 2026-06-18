@@ -1,6 +1,6 @@
 import { usePayloadGlobal } from "@/utils/usePayload";
 
-import ScrollContainer from "@/components/ScrollContainer";
+import ScrollContainer from "@/contexts/ScrollContext";
 import ImageSpread from "@/components/introduction/ImageSpread";
 import ContentReveal from "@/components/introduction/ContentReveal";
 

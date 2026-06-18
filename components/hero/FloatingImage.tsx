@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import { motion, useTransform } from "motion/react";
 import type { Media } from "@/payload-types";
 
-import { useScrollContext } from "@/utils/useScrollContext";
+import { useScrollContext } from "@/hooks/useScrollContext";
 
 interface Props extends Media {
   url: string;

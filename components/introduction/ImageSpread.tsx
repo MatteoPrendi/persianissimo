@@ -1,6 +1,6 @@
 "use client";
 import { motion, useTransform, useMotionTemplate } from "motion/react";
-import { useScrollContext } from "@/utils/useScrollContext";
+import { useScrollContext } from "@/hooks/useScrollContext";
 import type { Media } from "@/payload-types";
 
 type Image = Media & { url: string };

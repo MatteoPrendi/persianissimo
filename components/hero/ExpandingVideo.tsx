@@ -1,6 +1,6 @@
 "use client";
 import { motion, useTransform } from "motion/react";
-import { useScrollContext } from "@/utils/useScrollContext";
+import { useScrollContext } from "@/hooks/useScrollContext";
 
 interface Props {
   videoUrl: string;
