@@ -3,14 +3,16 @@ import {
   FacebookLogoIcon,
   TwitterLogoIcon,
 } from "@phosphor-icons/react/ssr";
+import Link from "next/link";
 
 const SOCIALS = [
   {
+    id: 1,
     href: "https://www.instagram.com/dalpersianissimo/",
     Logo: InstagramLogoIcon,
   },
-  { href: "#", Logo: FacebookLogoIcon },
-  { href: "#", Logo: TwitterLogoIcon },
+  { id: 2, href: "#", Logo: FacebookLogoIcon },
+  { id: 3, href: "#", Logo: TwitterLogoIcon },
 ];
 
 export default function SocialIcons() {
@@ -19,14 +21,15 @@ export default function SocialIcons() {
       <h3 className="text-background font-serif font-medium">Seguici</h3>
 
       <div className="flex space-x-5">
-        {SOCIALS.map(({ href, Logo }) => (
-          <a
+        {SOCIALS.map(({ id, href, Logo }) => (
+          <Link
+            key={id}
             href={href}
             target="_blank"
             className="text-background/80 transition-colors hover:text-blue-500"
           >
             <Logo size={22} />
-          </a>
+          </Link>
         ))}
       </div>
     </div>
