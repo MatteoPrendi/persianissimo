@@ -11,7 +11,7 @@ interface Props extends Media {
 }
 
 export default function FloatingImage({ url, alt, position }: Props) {
-  const yPos = useTransform(useScrollContext(), [0, 1], ["0%", "160%"]);
+  const yPos = useTransform(useScrollContext(), [0, 1], ["0%", "120%"]);
 
   return (
     <motion.div

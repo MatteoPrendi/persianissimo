@@ -9,7 +9,7 @@ interface Props {
 export default function ExpandingVideo({ videoUrl }: Props) {
   const yPos = useScrollContext();
 
-  const top = useTransform(yPos, [0, 1], ["65%", "0%"]);
+  const top = useTransform(yPos, [0, 1], ["70%", "0%"]);
   const width = useTransform(yPos, [0, 1], ["50%", "100%"]);
   const height = useTransform(yPos, [0, 1], ["25%", "100%"]);
   const borderRadius = useTransform(yPos, [0, 1], ["32px", "0px"]);

@@ -10,7 +10,6 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 
 import { getCurrentLocale } from "@/utils/locale";
-import React from "react";
 
 const latinSans = Inter({ variable: "--latin-sans", subsets: ["latin"] });
 const latinSerif = Merriweather({

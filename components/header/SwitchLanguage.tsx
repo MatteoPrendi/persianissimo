@@ -17,7 +17,8 @@ export default function LanguageDropdown({ languages }: Props) {
 
   function handleLanguageChange(languageCode: string) {
     if (languageCode !== currentLanguage?.code) {
-      router.push(pathname.replace(/^\/[^/]+/, `/${languageCode}`));
+      const newPath = pathname.replace(/^\/[^/]+/, `/${languageCode}`);
+      window.location.assign(newPath);
     }
   }
 
