@@ -1,3 +1,4 @@
+"use client";
 import { clsx } from "clsx";
 import { useMenuContext } from "@/hooks/useMenuContext";
 
@@ -6,7 +7,7 @@ export default function MenuToggle() {
 
   return (
     <button
-      className="relative h-6 w-6 overflow-hidden transition-all duration-300 md:hidden"
+      className="relative size-6 overflow-hidden transition-all duration-300 md:hidden"
       onClick={() => setIsOpen(prev => !prev)}
     >
       <div

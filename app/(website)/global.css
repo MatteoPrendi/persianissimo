@@ -6,3 +6,9 @@
   --color-accent: #e7000b;
   --color-border: #2b2d2f;
 }
+
+@layer base {
+  * {
+    @apply border-foreground/20;
+  }
+}
