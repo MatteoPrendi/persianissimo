@@ -1,4 +1,4 @@
-import { GlobalConfig } from "payload";
+import type { GlobalConfig } from "payload";
 
 import { Schedule } from "./schedule";
 import { Socials } from "./socials";

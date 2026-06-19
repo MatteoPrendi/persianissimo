@@ -86,16 +86,18 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'it' | 'fa') | ('en' | 'it' | 'fa')[];
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('it' | 'en' | 'fa') | ('it' | 'en' | 'fa')[];
   globals: {
+    header: Header;
     home: Home;
     footer: Footer;
   };
   globalsSelect: {
+    header: HeaderSelect<false> | HeaderSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: 'en' | 'it' | 'fa';
+  locale: 'it' | 'en' | 'fa';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -329,6 +331,23 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  menu: {
+    item: {
+      label: string;
+      href: string;
+    };
+    id?: string | null;
+  }[];
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home".
  */
 export interface Home {
@@ -391,6 +410,27 @@ export interface Footer {
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  menu?:
+    | T
+    | {
+        item?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        id?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

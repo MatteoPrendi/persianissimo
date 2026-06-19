@@ -4,6 +4,8 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 
 import { Users } from "@/payload/collections/Users";
 import { Media } from "@/payload/collections/Media";
+
+import { Header } from "@/payload/globals/header";
 import { Home } from "@/payload/globals/home";
 import { Footer } from "@/payload/globals/footer";
 
@@ -24,7 +26,7 @@ export default buildConfig({
     autoRefresh: true,
   },
   collections: [Users, Media],
-  globals: [Home, Footer],
+  globals: [Header, Home, Footer],
 
   secret: process.env.PAYLOAD_SECRET,
   db: postgresAdapter({
@@ -33,8 +35,8 @@ export default buildConfig({
 
   localization: {
     locales: [
-      { label: "English", code: "en" },
       { label: "Italiano", code: "it" },
+      { label: "English", code: "en" },
       { label: "فارسی", code: "fa", rtl: true },
     ],
     defaultLocale: "it",
