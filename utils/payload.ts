@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 
 import config from "@payload-config";
 import { getPayload } from "payload";
-import type { GlobalSlug, TypedGlobal } from "payload";
+import type { Field, GlobalSlug, TypedGlobal } from "payload";
 
 export async function getPayloadClient() {
   return await getPayload({ config });
@@ -20,4 +20,39 @@ export async function getPayloadGlobal<T extends GlobalSlug>(slug: T) {
   });
 
   return global as TypedGlobal[T];
+}
+
+export function buttonRequiredLocalizedField(name: string, label: string) {
+  return {
+    name,
+    label,
+    type: "group",
+    fields: [
+      {
+        type: "row",
+        fields: [
+          requiredLocalizedField("label", "Contenuto", "text"),
+          requiredLocalizedField("href", "Link", "text"),
+        ],
+      },
+    ],
+  } as Field;
+}
+
+export function requiredLocalizedField(
+  name: string,
+  label: string,
+  type: "text" | "textarea"
+) {
+  return { name, label, type, required: true, localized: true } as Field;
+}
+
+export function mediaUploadField(name: string, label: string) {
+  return {
+    name,
+    label,
+    type: "upload",
+    relationTo: "media",
+    required: true,
+  } as Field;
 }

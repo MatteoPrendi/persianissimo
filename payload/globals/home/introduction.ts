@@ -1,8 +1,5 @@
 import type { Tab } from "payload";
-import {
-  requiredLocalizedField,
-  mediaUploadField,
-} from "@/utils/fieldFactories";
+import { requiredLocalizedField, mediaUploadField } from "@/utils/payload";
 
 export const Introduction: Tab = {
   name: "introduction",

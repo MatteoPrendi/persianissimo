@@ -2,7 +2,7 @@ import {
   buttonRequiredLocalizedField,
   requiredLocalizedField,
   mediaUploadField,
-} from "@/utils/fieldFactories";
+} from "@/utils/payload";
 import type { Tab } from "payload";
 
 export const Hero: Tab = {
