@@ -89,9 +89,11 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'it' | 'fa') | ('en' | 'it' | 'fa')[];
   globals: {
     home: Home;
+    footer: Footer;
   };
   globalsSelect: {
     home: HomeSelect<false> | HomeSelect<true>;
+    footer: FooterSelect<false> | FooterSelect<true>;
   };
   locale: 'en' | 'it' | 'fa';
   widgets: {
@@ -371,6 +373,36 @@ export interface Home {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer".
+ */
+export interface Footer {
+  id: number;
+  info: {
+    title: string;
+  };
+  schedule: {
+    title: string;
+    weekday: string;
+    weekend: string;
+  };
+  socials: {
+    title: string;
+    instagram: {
+      href: string;
+    };
+    facebook: {
+      href: string;
+    };
+    twitter: {
+      href: string;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home_select".
  */
 export interface HomeSelect<T extends boolean = true> {
@@ -424,6 +456,48 @@ export interface HomeSelect<T extends boolean = true> {
           | {
               content?: T;
               id?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "footer_select".
+ */
+export interface FooterSelect<T extends boolean = true> {
+  info?:
+    | T
+    | {
+        title?: T;
+      };
+  schedule?:
+    | T
+    | {
+        title?: T;
+        weekday?: T;
+        weekend?: T;
+      };
+  socials?:
+    | T
+    | {
+        title?: T;
+        instagram?:
+          | T
+          | {
+              href?: T;
+            };
+        facebook?:
+          | T
+          | {
+              href?: T;
+            };
+        twitter?:
+          | T
+          | {
+              href?: T;
             };
       };
   _status?: T;

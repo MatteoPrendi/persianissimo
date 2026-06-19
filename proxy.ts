@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 
 import { getLocale, isAvailableLocale } from "@/utils/locale";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const segments = pathname.split("/").filter(Boolean);
 

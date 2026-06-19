@@ -1,5 +1,5 @@
 import {
-  buttonRequiredLocalizedField,
+  LinkField,
   requiredLocalizedField,
   mediaUploadField,
 } from "@/utils/payload";
@@ -16,7 +16,7 @@ export const Hero: Tab = {
       fields: [
         requiredLocalizedField("title", "Titolo", "text"),
         requiredLocalizedField("subtitle", "Sottotitolo", "textarea"),
-        buttonRequiredLocalizedField("button", "Pulsante"),
+        LinkField("button", "Pulsante"),
       ],
     },
     {

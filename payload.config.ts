@@ -2,12 +2,12 @@ import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 
-import { en } from "@payloadcms/translations/languages/en";
-import { it } from "@payloadcms/translations/languages/it";
-
 import { Users } from "@/payload/collections/Users";
 import { Media } from "@/payload/collections/Media";
 import { Home } from "@/payload/globals/home";
+import { Footer } from "@/payload/globals/footer";
+
+import { it } from "@payloadcms/translations/languages/it";
 
 if (!process.env.DATABASE_URL) {
   throw new Error("ERROR: DATABASE_URL not found.");
@@ -24,7 +24,7 @@ export default buildConfig({
     autoRefresh: true,
   },
   collections: [Users, Media],
-  globals: [Home],
+  globals: [Home, Footer],
 
   secret: process.env.PAYLOAD_SECRET,
   db: postgresAdapter({
@@ -42,7 +42,7 @@ export default buildConfig({
   },
   i18n: {
     fallbackLanguage: "it",
-    supportedLanguages: { en, it },
+    supportedLanguages: { it },
   },
 
   plugins: [

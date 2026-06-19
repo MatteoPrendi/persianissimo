@@ -22,7 +22,7 @@ export async function getPayloadGlobal<T extends GlobalSlug>(slug: T) {
   return global as TypedGlobal[T];
 }
 
-export function buttonRequiredLocalizedField(name: string, label: string) {
+export function LinkField(name: string, label: string) {
   return {
     name,
     label,
