@@ -1,5 +1,7 @@
-import { AVAILABLE_LOCALES } from "@/constants/available_locales";
 import { headers } from "next/headers";
+import type { Config } from "@/payload-types";
+
+type Locale = Config["locale"];
 
 export function getPreferredLocale(headers: Headers): string {
   const acceptLanguage = headers.get("accept-language");
@@ -9,16 +11,17 @@ export function getPreferredLocale(headers: Headers): string {
   return primaryLocale.split(/[-_]/)[0];
 }
 
-export function isAvailableLocale(locale: string): boolean {
-  return AVAILABLE_LOCALES.includes(locale);
+export function isAvailableLocale(locale: string): locale is Locale {
+  const validLocales: Locale[] = ["it", "en", "fa"];
+  return validLocales.includes(locale as Locale);
 }
 
-export function getLocale(headers: Headers): string {
+export function getLocale(headers: Headers): Locale {
   const locale = getPreferredLocale(headers);
   return isAvailableLocale(locale) ? locale : "it";
 }
 
-export async function getCurrentLocale() {
+export async function getCurrentLocale(): Promise<Locale> {
   const allHeaders = await headers();
-  return allHeaders.get("x-current-locale") as string;
+  return (allHeaders.get("x-current-locale") as Locale) || "it";
 }

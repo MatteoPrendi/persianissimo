@@ -5,15 +5,19 @@ import MenuToggle from "@/components/header/MenuToggle";
 import MenuContainer from "@/contexts/MenuContext";
 import SwitchLanguage from "./SwitchLanguage";
 
+import type { Config } from "@/payload-types";
+
 export default async function Header() {
   const {
     config: { localization },
   } = await getPayloadClient();
 
+  if (!localization) throw new Error("Localization is not enabled");
+
   const languages = localization.locales.map(locale => ({
     name: locale.label,
     code: locale.code,
-  }));
+  })) as { code: string; name: string }[];
 
   return (
     <MenuContainer>
