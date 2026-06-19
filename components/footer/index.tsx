@@ -17,10 +17,7 @@ export default async function Footer() {
         </div>
 
         <div className="border-background/20 text-background border-t pt-8 text-center text-sm">
-          <p>
-            &copy; {new Date().getFullYear()} Persianissimo. All rights
-            reserved.
-          </p>
+          <p>&copy; {new Date().getFullYear()} Persianissimo</p>
         </div>
       </div>
     </footer>

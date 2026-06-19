@@ -16,8 +16,6 @@ export default async function Header() {
     code: locale.code,
   })) as { code: string; name: string }[];
 
-  console.log(menu);
-
   return (
     <MenuContainer>
       <header className="fixed top-4 left-1/2 z-50 w-full max-w-7xl -translate-x-1/2 rounded px-4">

@@ -26,8 +26,6 @@ export default function Menu({ items }: Props) {
       )}
     >
       {items.map(({ id, item }) => {
-        console.log(item);
-
         return (
           <a
             key={id}
