@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "motion/react";
+import { ForkKnifeIcon } from "@phosphor-icons/react";
 
 interface Props {
   phrases: Array<string>;
@@ -23,7 +24,7 @@ export default function ScrollingText({ phrases }: Props) {
           </span>
 
           <span className="text-background/70 text-2xl md:text-3xl">
-            &bull;
+            <ForkKnifeIcon />
           </span>
         </div>
       ))}

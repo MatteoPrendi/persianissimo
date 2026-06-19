@@ -15,10 +15,14 @@ const SOCIALS = [
   { id: 3, href: "#", Logo: TwitterLogoIcon },
 ];
 
-export default function SocialIcons() {
+interface Props {
+  title: string;
+}
+
+export default function SocialIcons({ title }: Props) {
   return (
     <div className="flex flex-col items-center space-y-3 md:items-start">
-      <h3 className="text-background font-serif font-medium">Seguici</h3>
+      <h3 className="text-background font-serif font-medium">{title}</h3>
 
       <div className="flex space-x-5">
         {SOCIALS.map(({ id, href, Logo }) => (

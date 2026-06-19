@@ -4,10 +4,14 @@ import {
   PhoneIcon,
 } from "@phosphor-icons/react/ssr";
 
-export default function Contacts() {
+interface Props {
+  title: string;
+}
+
+export default function Contacts({ title }: Props) {
   return (
     <div className="flex flex-col items-center space-y-3 md:items-start">
-      <h3 className="text-background font-serif font-medium">Contatti</h3>
+      <h3 className="text-background font-serif font-medium">{title}</h3>
 
       <a
         href="mailto:info@persianissimo.it"

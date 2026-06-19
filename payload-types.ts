@@ -387,15 +387,6 @@ export interface Footer {
   };
   socials: {
     title: string;
-    instagram: {
-      href: string;
-    };
-    facebook: {
-      href: string;
-    };
-    twitter: {
-      href: string;
-    };
   };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
@@ -484,21 +475,6 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
-        instagram?:
-          | T
-          | {
-              href?: T;
-            };
-        facebook?:
-          | T
-          | {
-              href?: T;
-            };
-        twitter?:
-          | T
-          | {
-              href?: T;
-            };
       };
   _status?: T;
   updatedAt?: T;
