@@ -45,6 +45,14 @@ export default buildConfig({
   i18n: {
     fallbackLanguage: "it",
     supportedLanguages: { it },
+    translations: {
+      it: {
+        general: {
+          collections: "Database",
+          globals: "Elementi",
+        },
+      },
+    },
   },
 
   plugins: [
