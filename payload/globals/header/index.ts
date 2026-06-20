@@ -9,6 +9,15 @@ export const Header: GlobalConfig = {
       label: "Menù",
       name: "menu",
       type: "array",
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: {
+            path: "@/payload/admin/ArrayItemLabel",
+            clientProps: { path: "item.label" },
+          },
+        },
+      },
       fields: [LinkField("item", "Voce")],
       required: true,
     },

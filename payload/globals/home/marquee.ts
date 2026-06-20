@@ -9,6 +9,15 @@ export const Marquee: Tab = {
       label: "Frasi",
       type: "array",
       required: true,
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: {
+            path: "@/payload/admin/ArrayItemLabel",
+            clientProps: { path: "content" },
+          },
+        },
+      },
       fields: [
         {
           name: "content",
