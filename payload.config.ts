@@ -24,6 +24,33 @@ if (!process.env.BLOB_TOKEN) {
 export default buildConfig({
   admin: {
     autoRefresh: true,
+    livePreview: {
+      globals: ["home", "header", "footer"],
+      breakpoints: [
+        {
+          name: "desktop",
+          label: "Desktop",
+          width: 1920,
+          height: 1080,
+        },
+        {
+          name: "laptop",
+          label: "Laptop",
+          width: 1366,
+          height: 768,
+        },
+        {
+          name: "mobile",
+          label: "Mobile",
+          width: 375,
+          height: 1080,
+        },
+      ],
+      url: ({ globalConfig, locale }) => {
+        const targetPath = `/${locale.code}/${globalConfig?.slug === "home" ? "" : globalConfig?.slug}`;
+        return `/api/preview?url=${encodeURIComponent(targetPath)}&secret=${process.env.PAYLOAD_SECRET}`;
+      },
+    },
   },
   collections: [Users, Media],
   globals: [Header, Home, Footer],

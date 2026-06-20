@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+import { headers, draftMode } from "next/headers";
 
 import config from "@payload-config";
 import { getPayload } from "payload";
@@ -14,9 +14,13 @@ export async function getPayloadGlobal<T extends GlobalSlug>(slug: T) {
   const allHeaders = await headers();
   const currentLocale = allHeaders.get("x-current-locale") || "it";
 
+  const { isEnabled: isDraftMode } = await draftMode();
+
   const global = await payload.findGlobal({
     slug,
     locale: currentLocale as any,
+    draft: isDraftMode,
+    overrideAccess: isDraftMode,
   });
 
   return global as TypedGlobal[T];

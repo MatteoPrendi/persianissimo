@@ -8,6 +8,7 @@ import "@/app/(website)/global.css";
 
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { RefreshRouteOnSave } from "@/components/RefreshRouteOnSave";
 
 import { getCurrentLocale } from "@/utils/locale";
 
@@ -54,6 +55,7 @@ export default async function RootLayout({ children }: Props) {
         <Header />
         {children}
         <Footer />
+        <RefreshRouteOnSave />
       </body>
     </html>
   );
