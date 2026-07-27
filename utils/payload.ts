@@ -60,3 +60,20 @@ export function mediaUploadField(name: string, label: string) {
     required: true,
   } as Field;
 }
+
+export function FormField(name: string, label: string) {
+  return {
+    name,
+    label,
+    type: "group",
+    fields: [
+      {
+        type: "row",
+        fields: [
+          requiredLocalizedField("label", "Etichetta", "text"),
+          requiredLocalizedField("placeholder", "Placeholder", "text"),
+        ],
+      },
+    ],
+  } as Field;
+}

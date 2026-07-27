@@ -91,11 +91,13 @@ export interface Config {
     header: Header;
     home: Home;
     footer: Footer;
+    'contact-us': ContactUs;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'contact-us': ContactUsSelect<false> | ContactUsSelect<true>;
   };
   locale: 'it' | 'en' | 'fa';
   widgets: {
@@ -413,6 +415,41 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-us".
+ */
+export interface ContactUs {
+  id: number;
+  heading: string;
+  subtitle: string;
+  fields: {
+    name: {
+      label: string;
+      placeholder: string;
+    };
+    lastName: {
+      label: string;
+      placeholder: string;
+    };
+    email: {
+      label: string;
+      placeholder: string;
+    };
+    phone: {
+      label: string;
+      placeholder: string;
+    };
+    message: {
+      label: string;
+      placeholder: string;
+    };
+    submit: string;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -515,6 +552,53 @@ export interface FooterSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-us_select".
+ */
+export interface ContactUsSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  fields?:
+    | T
+    | {
+        name?:
+          | T
+          | {
+              label?: T;
+              placeholder?: T;
+            };
+        lastName?:
+          | T
+          | {
+              label?: T;
+              placeholder?: T;
+            };
+        email?:
+          | T
+          | {
+              label?: T;
+              placeholder?: T;
+            };
+        phone?:
+          | T
+          | {
+              label?: T;
+              placeholder?: T;
+            };
+        message?:
+          | T
+          | {
+              label?: T;
+              placeholder?: T;
+            };
+        submit?: T;
       };
   _status?: T;
   updatedAt?: T;

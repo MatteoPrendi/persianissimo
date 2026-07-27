@@ -8,6 +8,7 @@ import { Media } from "@/payload/collections/Media";
 import { Header } from "@/payload/globals/header";
 import { Home } from "@/payload/globals/home";
 import { Footer } from "@/payload/globals/footer";
+import { ContactUs } from "@/payload/globals/contact-us";
 
 import { it } from "@payloadcms/translations/languages/it";
 
@@ -25,7 +26,7 @@ export default buildConfig({
   admin: {
     autoRefresh: true,
     livePreview: {
-      globals: ["home", "header", "footer"],
+      globals: ["home", "header", "footer", "contact-us"],
       breakpoints: [
         {
           name: "desktop",
@@ -53,7 +54,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
-  globals: [Header, Home, Footer],
+  globals: [Header, Home, Footer, ContactUs],
 
   secret: process.env.PAYLOAD_SECRET,
   db: postgresAdapter({
