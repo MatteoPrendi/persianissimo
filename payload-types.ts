@@ -434,10 +434,6 @@ export interface ContactUs {
       label: string;
       placeholder: string;
     };
-    phone: {
-      label: string;
-      placeholder: string;
-    };
     message: {
       label: string;
       placeholder: string;
@@ -581,12 +577,6 @@ export interface ContactUsSelect<T extends boolean = true> {
               placeholder?: T;
             };
         email?:
-          | T
-          | {
-              label?: T;
-              placeholder?: T;
-            };
-        phone?:
           | T
           | {
               label?: T;

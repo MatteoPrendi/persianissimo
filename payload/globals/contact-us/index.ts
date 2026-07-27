@@ -15,7 +15,6 @@ export const ContactUs: GlobalConfig = {
         FormField("name", "Nome"),
         FormField("lastName", "Cognome"),
         FormField("email", "Email"),
-        FormField("phone", "Telefono"),
         FormField("message", "Messaggio"),
         requiredLocalizedField("submit", "Pulsante d'invio", "text"),
       ],

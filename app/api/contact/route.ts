@@ -1,16 +1,87 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+// Simple in-memory IP rate limiter: max 5 requests per 10 minutes per IP
+const rateLimitMap = new Map<string, { count: number; expiresAt: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const limitWindow = 10 * 60 * 1000; // 10 minutes
+  const maxRequests = 5;
+
+  const record = rateLimitMap.get(ip);
+  if (!record || now > record.expiresAt) {
+    rateLimitMap.set(ip, { count: 1, expiresAt: now + limitWindow });
+    return true;
+  }
+
+  if (record.count >= maxRequests) {
+    return false;
+  }
+
+  record.count += 1;
+  return true;
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, lastName, email, phone, message } = body;
+    const { name, lastName, email, message, website, _renderTime } = body;
 
-    if (!name || !lastName || !email || !phone || !message) {
+    // 1. Anti-Spam: Honeypot check
+    // If the hidden 'website' field is populated, it's a spambot.
+    // Return fake success so bot does not retry.
+    if (website && typeof website === "string" && website.trim().length > 0) {
+      console.warn("Spam detected via honeypot field");
+      return NextResponse.json({ success: true, message: "OK" });
+    }
+
+    // 2. Anti-Spam: Fast submission check
+    // Real humans take at least 2 seconds to complete and submit a contact form.
+    if (_renderTime && typeof _renderTime === "number") {
+      const timeElapsed = Date.now() - _renderTime;
+      if (timeElapsed < 2000) {
+        console.warn(`Spam detected via speed check (${timeElapsed}ms elapsed)`);
+        return NextResponse.json({ success: true, message: "OK" });
+      }
+    }
+
+    // 3. Anti-Spam: IP Rate limiting
+    const clientIp =
+      request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown-ip";
+
+    if (clientIp !== "unknown-ip" && !checkRateLimit(clientIp)) {
+      console.warn(`Rate limit exceeded for IP: ${clientIp}`);
       return NextResponse.json(
-        { error: "Tutti i campi sono obbligatori." },
+        { error: "Troppe richieste inviate. Riprova tra qualche minuto." },
+        { status: 429 }
+      );
+    }
+
+    // 4. Basic Validation
+    if (!name || !lastName || !email || !message) {
+      return NextResponse.json(
+        { error: "Tutti i campi obbligatori devono essere compilati." },
         { status: 400 }
       );
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      return NextResponse.json(
+        { error: "Inserisci un indirizzo email valido." },
+        { status: 400 }
+      );
+    }
+
+    // 5. Anti-Spam: Excessive links check in message
+    const urlMatches = message.match(/https?:\/\//gi);
+    if (urlMatches && urlMatches.length > 3) {
+      console.warn("Spam detected: excessive links in message");
+      return NextResponse.json({ success: true, message: "OK" });
     }
 
     const apiKey = process.env.RESEND_API_KEY;
@@ -48,10 +119,6 @@ export async function POST(request: Request) {
                 <td style="padding: 8px 0; font-weight: bold; color: #555;">Email:</td>
                 <td style="padding: 8px 0;"><a href="mailto:${escapeHtml(email)}" style="color: #0066cc;">${escapeHtml(email)}</a></td>
               </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold; color: #555;">Telefono:</td>
-                <td style="padding: 8px 0;"><a href="tel:${escapeHtml(phone)}" style="color: #0066cc;">${escapeHtml(phone)}</a></td>
-              </tr>
             </table>
             <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eeeeee;">
               <p style="font-weight: bold; margin-bottom: 8px; color: #555;">Messaggio:</p>
@@ -63,7 +130,7 @@ export async function POST(request: Request) {
           </div>
         </div>
       `,
-      text: `Nuovo messaggio di contatto\n\nNome: ${name} ${lastName}\nEmail: ${email}\nTelefono: ${phone}\n\nMessaggio:\n${message}`,
+      text: `Nuovo messaggio di contatto\n\nNome: ${name} ${lastName}\nEmail: ${email}\n\nMessaggio:\n${message}`,
     });
 
     if (error) {

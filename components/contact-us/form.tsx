@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { ContactUs } from "@/payload-types";
 import {
   PaperPlaneRightIcon,
@@ -13,12 +13,13 @@ interface FormProps {
 }
 
 export default function ContactForm({ fields }: FormProps) {
+  const formRenderTime = useRef<number>(Date.now());
   const [formData, setFormData] = useState({
     name: "",
     lastName: "",
     email: "",
-    phone: "",
     message: "",
+    website: "", // Honeypot field for anti-spam protection
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,11 +30,18 @@ export default function ContactForm({ fields }: FormProps) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+
+    // Client-side honeypot check (fake success if bot filled the field)
+    if (formData.website) {
+      setIsSubmitted(true);
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage(null);
 
@@ -43,7 +51,10 @@ export default function ContactForm({ fields }: FormProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          _renderTime: formRenderTime.current,
+        }),
       });
 
       const result = await response.json();
@@ -82,12 +93,13 @@ export default function ContactForm({ fields }: FormProps) {
           onClick={() => {
             setIsSubmitted(false);
             setErrorMessage(null);
+            formRenderTime.current = Date.now();
             setFormData({
               name: "",
               lastName: "",
               email: "",
-              phone: "",
               message: "",
+              website: "",
             });
           }}
           className="border-foreground/20 bg-white text-foreground hover:bg-foreground/5 hover:border-foreground/40 focus:ring-accent/50 inline-flex cursor-pointer items-center justify-center rounded-xl border px-6 py-3 text-sm font-medium transition-all focus:ring-2 focus:outline-none"
@@ -103,11 +115,26 @@ export default function ContactForm({ fields }: FormProps) {
       onSubmit={handleSubmit}
       className="border-foreground/10 space-y-6 rounded-3xl border bg-white p-6 shadow-xl sm:p-10"
     >
+      {/* Anti-spam Honeypot field (hidden from real users, filled by spambots) */}
+      <div className="sr-only hidden absolute -left-[9999px]" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formData.website}
+          onChange={handleChange}
+        />
+      </div>
+
       {errorMessage && (
         <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           {errorMessage}
         </div>
       )}
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {/* Name */}
         <div className="space-y-2">
@@ -150,46 +177,24 @@ export default function ContactForm({ fields }: FormProps) {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {/* Email */}
-        <div className="space-y-2">
-          <label
-            htmlFor="email"
-            className="text-foreground/90 block font-sans text-sm font-medium"
-          >
-            {fields.email.label} <span className="text-accent">*</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            placeholder={fields.email.placeholder}
-            className="border-foreground/15 bg-white text-foreground placeholder:text-foreground/40 focus:border-accent focus:ring-accent/20 w-full rounded-xl border px-4 py-3 font-sans transition-all focus:ring-2 focus:outline-none"
-          />
-        </div>
-
-        {/* Phone */}
-        <div className="space-y-2">
-          <label
-            htmlFor="phone"
-            className="text-foreground/90 block font-sans text-sm font-medium"
-          >
-            {fields.phone.label} <span className="text-accent">*</span>
-          </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            required
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder={fields.phone.placeholder}
-            className="border-foreground/15 bg-white text-foreground placeholder:text-foreground/40 focus:border-accent focus:ring-accent/20 w-full rounded-xl border px-4 py-3 font-sans transition-all focus:ring-2 focus:outline-none"
-          />
-        </div>
+      {/* Email */}
+      <div className="space-y-2">
+        <label
+          htmlFor="email"
+          className="text-foreground/90 block font-sans text-sm font-medium"
+        >
+          {fields.email.label} <span className="text-accent">*</span>
+        </label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          value={formData.email}
+          onChange={handleChange}
+          placeholder={fields.email.placeholder}
+          className="border-foreground/15 bg-white text-foreground placeholder:text-foreground/40 focus:border-accent focus:ring-accent/20 w-full rounded-xl border px-4 py-3 font-sans transition-all focus:ring-2 focus:outline-none"
+        />
       </div>
 
       {/* Message */}
