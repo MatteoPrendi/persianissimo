@@ -8,8 +8,12 @@ import {
   CheckCircleIcon,
   SpinnerIcon,
   WarningCircleIcon,
-  CheckIcon,
+  UserIcon,
+  EnvelopeSimpleIcon,
+  ChatTeardropTextIcon,
 } from "@phosphor-icons/react";
+import { clsx } from "clsx";
+import { Input, Textarea } from "@/components/ui/input";
 
 interface FormProps {
   fields: ContactUs["fields"];
@@ -36,7 +40,7 @@ export default function ContactForm({ fields }: FormProps) {
     lastName: "",
     email: "",
     message: "",
-    website: "", // Anti-spam honeypot
+    website: "",
   });
 
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -45,7 +49,6 @@ export default function ContactForm({ fields }: FormProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Field validation rules
   const validateField = (name: string, value: string): string | undefined => {
     const trimmed = value.trim();
     switch (name) {
@@ -66,6 +69,7 @@ export default function ContactForm({ fields }: FormProps) {
       case "message":
         if (!trimmed) return "Il messaggio è un campo obbligatorio.";
         if (trimmed.length < 10) return "Il messaggio deve contenere almeno 10 caratteri.";
+        if (value.length > 500) return "Il messaggio non può superare i 500 caratteri.";
         return undefined;
       default:
         return undefined;
@@ -110,10 +114,17 @@ export default function ContactForm({ fields }: FormProps) {
     setErrors((prev) => ({ ...prev, [name]: fieldErr }));
   };
 
+  const isFieldValid = (fieldKey: keyof FieldErrors): boolean => {
+    return Boolean(
+      touched[fieldKey] &&
+        !errors[fieldKey] &&
+        formData[fieldKey].trim().length > 0
+    );
+  };
+
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    // Mark all fields as touched
     setTouched({
       name: true,
       lastName: true,
@@ -129,7 +140,6 @@ export default function ContactForm({ fields }: FormProps) {
       return;
     }
 
-    // Client-side honeypot check (fake success for bots)
     if (formData.website) {
       setIsSubmitted(true);
       return;
@@ -167,69 +177,6 @@ export default function ContactForm({ fields }: FormProps) {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const getInputClassName = (fieldKey: keyof FieldErrors) => {
-    const hasError = touched[fieldKey] && errors[fieldKey];
-    const isValid =
-      touched[fieldKey] &&
-      !errors[fieldKey] &&
-      formData[fieldKey].trim().length > 0;
-
-    if (hasError) {
-      return "border-red-500 bg-red-50/20 text-foreground placeholder:text-foreground/40 focus:border-red-500 focus:ring-red-200/50 w-full rounded-xl border px-4 py-3 font-sans transition-all focus:ring-2 focus:outline-none";
-    }
-    if (isValid) {
-      return "border-emerald-500/50 bg-white text-foreground placeholder:text-foreground/40 focus:border-emerald-500/70 focus:ring-emerald-200/40 w-full rounded-xl border px-4 py-3 font-sans transition-all focus:ring-2 focus:outline-none";
-    }
-    return "border-foreground/15 bg-white text-foreground placeholder:text-foreground/40 focus:border-accent focus:ring-accent/20 w-full rounded-xl border px-4 py-3 font-sans transition-all focus:ring-2 focus:outline-none";
-  };
-
-  const renderFieldError = (fieldKey: keyof FieldErrors) => {
-    const error = errors[fieldKey];
-    const isTouched = touched[fieldKey];
-
-    return (
-      <AnimatePresence>
-        {isTouched && error && (
-          <motion.div
-            initial={{ opacity: 0, y: -4, height: 0 }}
-            animate={{ opacity: 1, y: 0, height: "auto" }}
-            exit={{ opacity: 0, y: -4, height: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="overflow-hidden"
-          >
-            <p className="text-red-600 font-sans text-xs font-medium flex items-center gap-1.5 pt-1.5">
-              <WarningCircleIcon size={14} className="shrink-0 text-red-500" />
-              <span>{error}</span>
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    );
-  };
-
-  const renderValidBadge = (fieldKey: keyof FieldErrors) => {
-    const isValid =
-      touched[fieldKey] &&
-      !errors[fieldKey] &&
-      formData[fieldKey].trim().length > 0;
-
-    return (
-      <AnimatePresence>
-        {isValid && (
-          <motion.span
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-            className="text-emerald-600 absolute right-3.5 top-3.5 flex items-center justify-center rounded-full bg-emerald-100 p-0.5"
-          >
-            <CheckIcon size={12} weight="bold" />
-          </motion.span>
-        )}
-      </AnimatePresence>
-    );
   };
 
   if (isSubmitted) {
@@ -286,8 +233,7 @@ export default function ContactForm({ fields }: FormProps) {
       className="border-foreground/10 space-y-6 rounded-3xl border bg-white p-6 shadow-xl sm:p-10"
       noValidate
     >
-      {/* Anti-spam Honeypot field */}
-      <div className="sr-only hidden absolute -left-[9999px]" aria-hidden="true">
+      <div className="sr-only hidden absolute left-[-9999px]" aria-hidden="true">
         <label htmlFor="website">Website</label>
         <input
           type="text"
@@ -318,128 +264,111 @@ export default function ContactForm({ fields }: FormProps) {
       </AnimatePresence>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-        {/* Name */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.35 }}
-          className="space-y-1.5"
         >
-          <label
-            htmlFor="name"
-            className="text-foreground/90 block font-sans text-sm font-medium"
-          >
-            {fields.name.label} <span className="text-accent">*</span>
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder={fields.name.placeholder}
-              className={getInputClassName("name")}
-            />
-            {renderValidBadge("name")}
-          </div>
-          {renderFieldError("name")}
+          <Input
+            id="name"
+            name="name"
+            label={fields.name.label}
+            placeholder={fields.name.placeholder}
+            required
+            value={formData.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.name}
+            touched={touched.name}
+            isValid={isFieldValid("name")}
+            icon={<UserIcon size={18} />}
+            autoComplete="off"
+          />
         </motion.div>
 
-        {/* Last Name */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.4 }}
-          className="space-y-1.5"
         >
-          <label
-            htmlFor="lastName"
-            className="text-foreground/90 block font-sans text-sm font-medium"
-          >
-            {fields.lastName.label} <span className="text-accent">*</span>
-          </label>
-          <div className="relative">
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              required
-              value={formData.lastName}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              placeholder={fields.lastName.placeholder}
-              className={getInputClassName("lastName")}
-            />
-            {renderValidBadge("lastName")}
-          </div>
-          {renderFieldError("lastName")}
+          <Input
+            id="lastName"
+            name="lastName"
+            autoComplete="off"
+            label={fields.lastName.label}
+            placeholder={fields.lastName.placeholder}
+            required
+            value={formData.lastName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={errors.lastName}
+            touched={touched.lastName}
+            isValid={isFieldValid("lastName")}
+            icon={<UserIcon size={18} />}
+          />
         </motion.div>
       </div>
 
-      {/* Email */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.45 }}
-        className="space-y-1.5"
       >
-        <label
-          htmlFor="email"
-          className="text-foreground/90 block font-sans text-sm font-medium"
-        >
-          {fields.email.label} <span className="text-accent">*</span>
-        </label>
-        <div className="relative">
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder={fields.email.placeholder}
-            className={getInputClassName("email")}
-          />
-          {renderValidBadge("email")}
-        </div>
-        {renderFieldError("email")}
+        <Input
+          type="email"
+          id="email"
+          name="email"
+          label={fields.email.label}
+          placeholder={fields.email.placeholder}
+          required
+          value={formData.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={errors.email}
+          touched={touched.email}
+          isValid={isFieldValid("email")}
+          icon={<EnvelopeSimpleIcon size={18} />}
+        />
       </motion.div>
 
-      {/* Message */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.5 }}
-        className="space-y-1.5"
       >
-        <label
-          htmlFor="message"
-          className="text-foreground/90 block font-sans text-sm font-medium"
-        >
-          {fields.message.label} <span className="text-accent">*</span>
-        </label>
-        <div className="relative">
-          <textarea
-            id="message"
-            name="message"
-            rows={5}
-            required
-            value={formData.message}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder={fields.message.placeholder}
-            className={`min-h-30 resize-y ${getInputClassName("message")}`}
-          />
-          {renderValidBadge("message")}
-        </div>
-        {renderFieldError("message")}
+        <Textarea
+          id="message"
+          name="message"
+          label={fields.message.label}
+          placeholder={fields.message.placeholder}
+          required
+          rows={5}
+          maxLength={500}
+          value={formData.message}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={errors.message}
+          touched={touched.message}
+          isValid={isFieldValid("message")}
+          icon={<ChatTeardropTextIcon size={18} />}
+          className="min-h-30 max-h-75 resize-y"
+          rightLabelElement={
+            <span
+              className={clsx(
+                "font-sans text-xs font-medium transition-colors",
+                formData.message.length >= 480
+                  ? "font-bold text-red-500"
+                  : formData.message.length >= 400
+                  ? "text-amber-600"
+                  : "text-foreground/50"
+              )}
+            >
+              {formData.message.length}/500
+            </span>
+          }
+        />
       </motion.div>
 
-      {/* Submit Button */}
       <motion.div
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}

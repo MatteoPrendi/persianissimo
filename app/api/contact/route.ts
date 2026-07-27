@@ -77,6 +77,14 @@ export async function POST(request: Request) {
       );
     }
 
+    // Message max length validation (500 characters max)
+    if (message.length > 500) {
+      return NextResponse.json(
+        { error: "Il messaggio non può superare i 500 caratteri." },
+        { status: 400 }
+      );
+    }
+
     // 5. Anti-Spam: Excessive links check in message
     const urlMatches = message.match(/https?:\/\//gi);
     if (urlMatches && urlMatches.length > 3) {

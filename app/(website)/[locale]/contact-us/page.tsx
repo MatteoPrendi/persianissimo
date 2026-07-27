@@ -1,5 +1,5 @@
 import { getPayloadGlobal } from "@/utils/payload";
-import ContactUsClient from "@/components/contact-us/ContactUsClient";
+import ContactUsClient from "@/components/contact-us";
 
 export default async function ContactUsPage() {
   const contactData = await getPayloadGlobal("contact-us");

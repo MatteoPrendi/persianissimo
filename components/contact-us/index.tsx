@@ -18,7 +18,6 @@ export default function ContactUsClient({
   return (
     <main className="min-h-[80vh] px-4 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-12">
-        {/* Animated Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -44,7 +43,6 @@ export default function ContactUsClient({
           </motion.p>
         </motion.div>
 
-        {/* Animated Form Container */}
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
