@@ -60,6 +60,13 @@ const galleryImages: GalleryItem[] = [
     alt: "Slow-Roasted Glazed Ribs",
     className: "col-span-1 h-72 md:h-80",
   },
+  {
+    id: 8,
+    title: "Artisanal Sourdough Bread",
+    src: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
+    alt: "Artisanal Sourdough Bread",
+    className: "col-span-1 h-72 md:h-80",
+  },
 ];
 
 export default function Gallery() {
@@ -93,8 +100,11 @@ export default function Gallery() {
             onClick={() => setIndex(idx)}
             className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-neutral-100 shadow-md transition-shadow hover:shadow-xl ${item.className}`}
           >
+            <div className="absolute top-3 right-3 rounded-sm z-10 flex h-8 w-8 items-center justify-center bg-black/40 text-white backdrop-blur-md sm:hidden">
+              <EyeIcon size={18} weight="bold" />
+            </div>
+
             <div className="relative h-full w-full overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={item.src}
                 alt={item.alt || item.title || "Gallery image"}
@@ -102,8 +112,7 @@ export default function Gallery() {
               />
             </div>
 
-            {/* Hover overlay with Title */}
-            <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black/70 via-black/20 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-white">
                   {item.title}
