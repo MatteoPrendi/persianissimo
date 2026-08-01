@@ -1,5 +1,6 @@
 "use client";
 import { motion, useTransform } from "motion/react";
+import { ArrowDownIcon } from "@phosphor-icons/react";
 import { useScrollContext } from "@/hooks/useScrollContext";
 
 interface Props {
@@ -31,6 +32,8 @@ export default function ContentReveal({ badge, title, subtitle }: Props) {
       <p className="mx-auto mt-5 max-w-md leading-relaxed text-pretty text-gray-700">
         {subtitle}
       </p>
+
+      <ArrowDownIcon size={20} className="animate-bounce mx-auto mt-6" />
     </motion.div>
   );
 }
