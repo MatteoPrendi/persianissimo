@@ -2,6 +2,7 @@ import Hero from "@/components/home/hero";
 import Introduction from "@/components/home/introduction";
 import Marquee from "@/components/home/marquee";
 import TestimonialSlider from "@/components/home/testimonials";
+import Gallery from "@/components/home/gallery";
 
 export default async function Home() {
   return (
@@ -11,7 +12,10 @@ export default async function Home() {
       <Introduction />
       <Marquee />
 
+      <Gallery />
+
       <TestimonialSlider />
     </main>
   );
 }
+
