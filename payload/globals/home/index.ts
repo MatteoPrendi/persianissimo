@@ -3,6 +3,7 @@ import { GlobalConfig } from "payload";
 import { Hero } from "@/payload/globals/home/hero";
 import { Introduction } from "@/payload/globals/home/introduction";
 import { Marquee } from "@/payload/globals/home/marquee";
+import { Gallery } from "@/payload/globals/home/gallery";
 
 export const Home: GlobalConfig = {
   slug: "home",
@@ -10,7 +11,7 @@ export const Home: GlobalConfig = {
   fields: [
     {
       type: "tabs",
-      tabs: [Hero, Introduction, Marquee],
+      tabs: [Hero, Introduction, Marquee, Gallery],
     },
   ],
 

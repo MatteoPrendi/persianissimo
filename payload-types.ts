@@ -388,6 +388,19 @@ export interface Home {
       id?: string | null;
     }[];
   };
+  gallery: {
+    content: {
+      title: string;
+      subtitle: string;
+    };
+    items: {
+      image: number | Media;
+      title: string;
+      alt?: string | null;
+      size?: ('auto' | 'normal' | 'wide' | 'tall') | null;
+      id?: string | null;
+    }[];
+  };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -519,6 +532,25 @@ export interface HomeSelect<T extends boolean = true> {
           | T
           | {
               content?: T;
+              id?: T;
+            };
+      };
+  gallery?:
+    | T
+    | {
+        content?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+            };
+        items?:
+          | T
+          | {
+              image?: T;
+              title?: T;
+              alt?: T;
+              size?: T;
               id?: T;
             };
       };

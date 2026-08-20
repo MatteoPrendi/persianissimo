@@ -1,16 +1,8 @@
-"use client";
+import { getPayloadGlobal } from "@/utils/payload";
+import GalleryClient, { GalleryItemData } from "./GalleryClient";
+import type { Media } from "@/payload-types";
 
-import { useState } from "react";
-import { motion } from "motion/react";
-import { EyeIcon } from "@phosphor-icons/react";
-import Lightbox, { SlideItem } from "@/components/ui/lightbox";
-
-interface GalleryItem extends SlideItem {
-  id: number;
-  className: string;
-}
-
-const galleryImages: GalleryItem[] = [
+const defaultGalleryImages: GalleryItemData[] = [
   {
     id: 1,
     title: "Rustic Family Feast",
@@ -69,69 +61,50 @@ const galleryImages: GalleryItem[] = [
   },
 ];
 
-export default function Gallery() {
-  const [index, setIndex] = useState(-1);
+function getItemClassName(size: string | undefined | null, idx: number): string {
+  if (size === "wide") return "col-span-1 md:col-span-2 h-80 md:h-96";
+  if (size === "tall") return "col-span-1 md:row-span-2 h-96 md:h-full min-h-[350px]";
+  if (size === "normal") return "col-span-1 h-72 md:h-80";
 
-  const slides: SlideItem[] = galleryImages.map(({ src, title, alt }) => ({
-    src,
-    title,
-    alt,
-  }));
+  const mod = idx % 6;
+  if (mod === 0 || mod === 5) return "col-span-1 md:col-span-2 h-80 md:h-96";
+  if (mod === 1 || mod === 4) return "col-span-1 md:row-span-2 h-96 md:h-full min-h-[350px]";
+  return "col-span-1 h-72 md:h-80";
+}
 
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-20 font-sans">
-      <div className="mb-12 text-center">
-        <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Gallery Showcase
-        </h2>
-        <p className="text-foreground/70 mx-auto mt-3 max-w-xl text-base leading-relaxed">
-          Explore our collection of authentic Persian craftsmanship, featuring intricate designs and timeless artistry.
-        </p>
-      </div>
+export default async function Gallery() {
+  const homeData = await getPayloadGlobal("home");
+  const gallery = homeData?.gallery;
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {galleryImages.map((item, idx) => (
-          <motion.div
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: idx * 0.08 }}
-            viewport={{ once: true }}
-            onClick={() => setIndex(idx)}
-            className={`group relative cursor-pointer overflow-hidden rounded-2xl bg-neutral-100 shadow-md transition-shadow hover:shadow-xl ${item.className}`}
-          >
-            <div className="absolute top-3 right-3 rounded-sm z-10 flex h-8 w-8 items-center justify-center bg-black/40 text-white backdrop-blur-md sm:hidden">
-              <EyeIcon size={18} weight="bold" />
-            </div>
+  const title = gallery?.content?.title || "Gallery Showcase";
+  const subtitle =
+    gallery?.content?.subtitle ||
+    "Explore our collection of authentic Persian craftsmanship, featuring intricate designs and timeless artistry.";
 
-            <div className="relative h-full w-full overflow-hidden">
-              <img
-                src={item.src}
-                alt={item.alt || item.title || "Gallery image"}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
+  let items: GalleryItemData[] = [];
 
-            <div className="absolute inset-0 flex flex-col justify-end bg-linear-to-t from-black/70 via-black/20 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">
-                  {item.title}
-                </h3>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-md transition-transform group-hover:scale-110">
-                  <EyeIcon size={20} weight="bold" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+  if (gallery?.items && gallery.items.length > 0) {
+    items = gallery.items
+      .map((item, idx) => {
+        const mediaObj = typeof item.image === "object" ? (item.image as Media) : null;
+        const src = mediaObj?.url || "";
+        const alt = item.alt || mediaObj?.alt || item.title || "Gallery image";
 
-      <Lightbox
-        open={index >= 0}
-        index={index}
-        close={() => setIndex(-1)}
-        slides={slides}
-      />
-    </section>
-  );
+        return {
+          id: item.id || idx,
+          title: item.title,
+          src,
+          alt,
+          className: getItemClassName(item.size, idx),
+        };
+      })
+      .filter((item) => Boolean(item.src));
+  }
+
+  // Fallback to default gallery images if no valid payload media items exist
+  if (items.length === 0) {
+    items = defaultGalleryImages;
+  }
+
+  return <GalleryClient title={title} subtitle={subtitle} items={items} />;
 }
